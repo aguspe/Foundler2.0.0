@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private Cards cards_data[];
     private ArrayAdaptor arrayAdapter;
     private int i;
+    private DatabaseReference usersDb;
+    private String currentUid;
 
     ListView listView;
     List<Cards> rowItems;
@@ -39,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
+        currentUid = mAuth.getCurrentUser().getUid();
         //add the view via xml or programmatically
                 checkUserGender();
 
@@ -65,11 +69,17 @@ public class MainActivity extends AppCompatActivity {
                         //Do something on the left!
                         //You also have access to the original object.
                         //If you want to use it just cast it (String) dataObject
+                        Cards obj = (Cards) dataObject;
+                        String userId = obj.getUserId();
+                        usersDb.child(differentUserGender).child(userId).child("connections").child("No").child(currentUid).setValue(true);
                         Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onRightCardExit(Object dataObject) {
+                        Cards obj = (Cards) dataObject;
+                        String userId = obj.getUserId();
+                        usersDb.child(differentUserGender).child(userId).child("connections").child("Yes").child(currentUid).setValue(true);
                         Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -204,8 +214,7 @@ public class MainActivity extends AppCompatActivity {
                @Override
                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                   if (dataSnapshot.exists()){
-
+                   if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("No").hasChild(currentUid) && !dataSnapshot.child("connections").child("Yes").hasChild(currentUid)){
                        Cards Item = new Cards(dataSnapshot.getKey(), Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString());
                        Log.d("Called", "This is called");
                        rowItems.add(Item);
