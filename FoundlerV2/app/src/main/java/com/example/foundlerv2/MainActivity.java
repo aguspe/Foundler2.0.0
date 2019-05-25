@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         Cards obj = (Cards) dataObject;
                         String userId = obj.getUserId();
                         usersDb.child(differentUserGender).child(userId).child("connections").child("Yes").child(currentUid).setValue(true);
+                        isConnectionMatch(userId);
                         Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -101,7 +103,25 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-            private  String userGender;
+    private void isConnectionMatch(String userId) {
+        DatabaseReference currentUserConnectionsDb = usersDb.child(userGender).child(currentUid).child("connections").child("Yes").child(userId);
+        currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(MainActivity.this, "It's a match", Toast.LENGTH_LONG).show();
+                    usersDb.child(differentUserGender).child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUid).setValue(true);
+                    usersDb.child(userGender).child(currentUid).child("connections").child("matches").child(dataSnapshot.getKey()).setValue(true);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private  String userGender;
             private  String differentUserGender;
 //            private  String differentUserGender2;
        public void checkUserGender () {
