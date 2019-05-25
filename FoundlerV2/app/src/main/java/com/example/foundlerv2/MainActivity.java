@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 checkUserGender();
 
                 rowItems = new ArrayList<Cards>();
-
-                //choose your favorite adapter
+                
                 arrayAdapter = new ArrayAdaptor(this, R.layout.item, rowItems);
 
                 SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
