@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
-    private Button mLogin;
+    private Button mLogin, mLoginBack;
     private EditText mEmail, mPassword;
 
     private FirebaseAuth mAuth;
@@ -42,23 +43,38 @@ public class LoginActivity extends AppCompatActivity {
 
 
         mLogin = (Button) findViewById(R.id.login_page_button);
-
+        mLoginBack = (Button) findViewById(R.id.back_button);
         mEmail = (EditText) findViewById(R.id.emailLI);
         mPassword = (EditText) findViewById(R.id.passwordLI);
+
+        mLoginBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, StartUpActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String emailLI = mEmail.getText().toString();
-                final String passwordLI = mPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(emailLI, passwordLI).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "sign in error", Toast.LENGTH_SHORT).show();
+                    assert mEmail != null;
+                    final String emailLI = mEmail.getText().toString();
+                    final String passwordLI = mPassword.getText().toString();
+                if (emailLI.equals("") || passwordLI.equals("")) {
+                    Toast.makeText(LoginActivity.this, "Please enter your email or your password correctly", Toast.LENGTH_SHORT).show();
+                }else {
+                    mAuth.signInWithEmailAndPassword(emailLI, passwordLI).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Login error", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }

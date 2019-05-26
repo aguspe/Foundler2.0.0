@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +24,8 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.example.foundlerv2.Matches.MatchesActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -209,4 +210,27 @@ public class MainActivity extends AppCompatActivity {
         finish();
         return;
     }
+
+    public void goToMatches(View view) {
+        Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+        startActivity(intent);
+        finish();
+        return;
+    }
+
+//    public void likeUser(Object dataObject) {
+//        Cards obj = (Cards) dataObject;
+//        String userId = obj.getUserId();
+//        usersDb.child(userId).child("connections").child("Yes").child(currentUid).setValue(true);
+//        isConnectionMatch(userId);
+//        Toast.makeText(MainActivity.this, "Like!", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    public void dislikeUser(Object dataObject) {
+//        Cards obj = (Cards) dataObject;
+//        String userId = obj.getUserId();
+//        usersDb.child(userId).child("connections").child("No").child(currentUid).setValue(true);
+//        isConnectionMatch(userId);
+//        Toast.makeText(MainActivity.this, "Dislike!", Toast.LENGTH_SHORT).show();
+//    }
 }

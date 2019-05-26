@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private Button mSignUpP;
+    private Button mSignUpP, mSignUpB;
     private EditText mEmail, mPassword, mName;
 
     private RadioGroup mRadioGroup;
@@ -56,12 +56,22 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         mSignUpP = (Button) findViewById(R.id.signup_page_button);
-
+        mSignUpB = (Button) findViewById(R.id.signup_back_button);
         mEmail = (EditText) findViewById(R.id.emailSU);
         mPassword = (EditText) findViewById(R.id.passwordSU);
         mName = (EditText) findViewById(R.id.nameSU);
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+
+        mSignUpB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUpActivity.this, StartUpActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
 
         mSignUpP.setOnClickListener(new View.OnClickListener() {
             @Override

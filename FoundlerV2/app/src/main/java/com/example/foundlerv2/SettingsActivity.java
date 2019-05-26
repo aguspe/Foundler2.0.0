@@ -73,6 +73,8 @@ public class SettingsActivity extends AppCompatActivity {
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
                 return;
             }
@@ -125,12 +127,17 @@ public class SettingsActivity extends AppCompatActivity {
                             userInfo.put("profilePictureUrl", downloadUrl.toString());
                             mUserDatabase.updateChildren(userInfo);
 
+                            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                            startActivity(intent);
                             finish();
                             return;
                         }
                     });
                 }else{
+                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    startActivity(intent);
                     finish();
+                    return;
                 }
             }
         });
