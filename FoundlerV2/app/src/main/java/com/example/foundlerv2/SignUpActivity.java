@@ -69,30 +69,31 @@ public class SignUpActivity extends AppCompatActivity {
                 int selectId = mRadioGroup.getCheckedRadioButtonId();
 
                 final RadioButton radioButton = (RadioButton) findViewById(selectId);
-                if(radioButton.getText() == null){
-                    return;
-                }
 
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
                 final String name = mName.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(SignUpActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
-                        }else{
-                            String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
-                            Map<String, String> userInfo = new HashMap<String, String>();
-                            userInfo.put("name", name);
-                            userInfo.put("gender", radioButton.getText().toString());
-                            userInfo.put("profilePictureUrl","default");
-                            currentUserDb.setValue(userInfo);
+                if (email.equals("") || password.equals("") || name.equals("")) {
+                    Toast.makeText(SignUpActivity.this, "Please enter your email, your password or your name correctly and select a gender", Toast.LENGTH_SHORT).show();
+                } else {
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(SignUpActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                                DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                                Map<String, String> userInfo = new HashMap<String, String>();
+                                userInfo.put("name", name);
+                                userInfo.put("gender", radioButton.getText().toString());
+                                userInfo.put("profilePictureUrl", "default");
+                                currentUserDb.setValue(userInfo);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }
