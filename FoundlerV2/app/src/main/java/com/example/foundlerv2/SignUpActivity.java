@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -83,8 +84,12 @@ public class SignUpActivity extends AppCompatActivity {
                             Toast.makeText(SignUpActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
                         }else{
                             String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
-                            currentUserDb.setValue(name);
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                            Map<String, String> userInfo = new HashMap<String, String>();
+                            userInfo.put("name", name);
+                            userInfo.put("gender", radioButton.getText().toString());
+                            userInfo.put("profilePictureUrl","default");
+                            currentUserDb.setValue(userInfo);
                         }
                     }
                 });

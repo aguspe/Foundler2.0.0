@@ -13,4 +13,5 @@
     <string name="name_settings">Name</string>
     <string name="phone_settings">Phone</string>
     <string name="settings_save_changes">Save</string>
+    <string name="gender">Gender</string>
 </resources>

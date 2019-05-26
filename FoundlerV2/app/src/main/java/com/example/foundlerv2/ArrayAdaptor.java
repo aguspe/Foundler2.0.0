@@ -1,12 +1,15 @@
 package com.example.foundlerv2;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -30,7 +33,18 @@ public class ArrayAdaptor extends ArrayAdapter <Cards>{
 
         assert card_item != null;
         name.setText(card_item.getName());
-        image.setImageResource(R.mipmap.ic_launcher);
+        Log.d("tryme", card_item.getProfilePictureUrl());
+        switch (card_item.getProfilePictureUrl()){
+            case "default":
+                Log.d("hit me", "hit here");
+                image.setImageResource(R.mipmap.ic_launcher);
+                break;
+
+             default:
+                 Glide.clear(image);
+                 Glide.with(convertView.getContext()).load(card_item.getProfilePictureUrl()).into(image);
+                 break;
+        }
 
         return convertView;
     }

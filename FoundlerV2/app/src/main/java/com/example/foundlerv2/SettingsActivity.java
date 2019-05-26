@@ -36,13 +36,13 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField;
+    private EditText mNameField, mPhoneField, mGenderField;
     private Button mBack, mSave;
     private ImageView mProfilePicture;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference mEnjoyerDatabase;
-    private String userId, name, phone, profilePictureUrl;
+    private DatabaseReference mUserDatabase;
+    private String userId, name, phone, profilePictureUrl, userGender;
     private Uri resultUri;
 
     @Override
@@ -52,15 +52,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         mNameField = (EditText) findViewById(R.id.name);
         mPhoneField = (EditText) findViewById(R.id.phone);
+        mGenderField = (EditText) findViewById(R.id.gender);
         mProfilePicture = (ImageView) findViewById(R.id.profilePicture);
         mSave = (Button) findViewById(R.id.save);
         mBack = (Button) findViewById(R.id.back);
 
-        String userGender = Objects.requireNonNull(getIntent().getExtras()).getString("userGender");
         mAuth = FirebaseAuth.getInstance();
         userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        assert userGender != null;
-        mEnjoyerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userGender).child(userId);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
         getUserInfo();
         mProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,11 +87,13 @@ public class SettingsActivity extends AppCompatActivity {
             private void saveUserInformation() {
                 name = mNameField.getText().toString();
                 phone = mPhoneField.getText().toString();
+                userGender = mGenderField.getText().toString();
 
                 Map<String, Object> userInfo = new HashMap<String, Object>();
                 userInfo.put("name", name);
                 userInfo.put("phone", phone);
-                mEnjoyerDatabase.updateChildren(userInfo);
+                userInfo.put("gender", userGender);
+                mUserDatabase.updateChildren(userInfo);
                 if(resultUri != null){
                     Log.d("hello", "saveUserInformation: hey");
                     StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profilePictures").child(userId);
@@ -122,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                             Map<String, Object> userInfo = new HashMap<>();
                             userInfo.put("profilePictureUrl", downloadUrl.toString());
-                            mEnjoyerDatabase.updateChildren(userInfo);
+                            mUserDatabase.updateChildren(userInfo);
 
                             finish();
                             return;
@@ -136,7 +137,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void getUserInfo() {
-        mEnjoyerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
@@ -148,12 +149,27 @@ public class SettingsActivity extends AppCompatActivity {
                         mNameField.setText(name);
                     }
                     if(map.get("phone") != null){
-                        name = Objects.requireNonNull(map.get("phone")).toString();
-                        mNameField.setText(phone);
+                        phone = Objects.requireNonNull(map.get("phone")).toString();
+                        mPhoneField.setText(phone);
                     }
+                    if(map.get("gender") != null){
+                        userGender = Objects.requireNonNull(map.get("gender")).toString();
+                        mGenderField.setText(userGender);
+                    }
+                    Glide.clear(mProfilePicture);
+
                     if(map.get("profilePictureUrl") != null){
                         profilePictureUrl = Objects.requireNonNull(map.get("profilePictureUrl")).toString();
-                        Glide.with(getApplication()).load(profilePictureUrl).into(mProfilePicture);
+                        Log.d("tagi", profilePictureUrl);
+                        switch (profilePictureUrl){
+                            case "default":
+                                mProfilePicture.setImageResource(R.mipmap.ic_launcher);
+                                break;
+
+                            default:
+                                Glide.with(getApplication()).load(profilePictureUrl).into(mProfilePicture);
+                                break;
+                        }
                     }
                 }
             }
