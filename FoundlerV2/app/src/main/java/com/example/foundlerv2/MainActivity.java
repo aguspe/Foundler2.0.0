@@ -158,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                @Override
                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                   Log.d("gender", differentUserGender);
                    Log.d("gender2", Objects.requireNonNull(dataSnapshot.child("gender").getValue()).toString());
                    if (dataSnapshot.exists() && !dataSnapshot.child("connections").child("No").hasChild(currentUid) && !dataSnapshot.child("connections").child("Yes").hasChild(currentUid)
                    && Objects.equals(Objects.requireNonNull(dataSnapshot.child("gender").getValue()).toString(), differentUserGender)){

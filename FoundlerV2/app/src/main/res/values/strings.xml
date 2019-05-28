@@ -16,4 +16,8 @@
     <string name="gender">Gender</string>
     <string name="matches">Matches</string>
     <string name="dislike">Dislike</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="match_s_name">Match\'s Name</string>
+    <string name="match_s_id">Match\'s ID</string>
+    <string name="match_s_phone">Match\'s Phone</string>
 </resources>

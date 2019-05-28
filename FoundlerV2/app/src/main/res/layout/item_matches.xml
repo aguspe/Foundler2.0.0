@@ -4,16 +4,39 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="20sp">
-
     <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:src="@mipmap/ic_launcher"/>
-    <TextView
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/matchImage"/>
+    <LinearLayout
+        android:paddingLeft="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Match Id"
-        android:layout_gravity="center"
-        android:id="@+id/matchId"/>
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:paddingBottom="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/match_s_name"
+            android:id="@+id/matchName"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/match_s_id"
+            android:layout_gravity="center"
+            android:paddingBottom="20sp"
+            android:id="@+id/matchId"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/matchPhone"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:paddingBottom="20sp"-->
+            <!--android:text="@string/match_s_phone" />-->
+    </LinearLayout>
+
 
 </LinearLayout>

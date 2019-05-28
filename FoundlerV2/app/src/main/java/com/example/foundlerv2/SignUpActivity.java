@@ -28,7 +28,7 @@ import java.util.Objects;
 public class SignUpActivity extends AppCompatActivity {
 
     private Button mSignUpP, mSignUpB;
-    private EditText mEmail, mPassword, mName;
+    private EditText mEmail, mPassword, mName, mPhone;
 
     private RadioGroup mRadioGroup;
 
@@ -58,6 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
         mSignUpP = (Button) findViewById(R.id.signup_page_button);
         mSignUpB = (Button) findViewById(R.id.signup_back_button);
         mEmail = (EditText) findViewById(R.id.emailSU);
+        mPhone = (EditText) findViewById(R.id.phoneSU);
         mPassword = (EditText) findViewById(R.id.passwordSU);
         mName = (EditText) findViewById(R.id.nameSU);
 
@@ -83,8 +84,9 @@ public class SignUpActivity extends AppCompatActivity {
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
                 final String name = mName.getText().toString();
+                final String phone = mPhone.getText().toString();
                 if (email.equals("") || password.equals("") || name.equals("")) {
-                    Toast.makeText(SignUpActivity.this, "Please enter your email, your password or your name correctly and select a gender", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, "Please enter your email, your password, your phone or your name correctly and select a gender", Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -97,6 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
                                 Map<String, String> userInfo = new HashMap<String, String>();
                                 userInfo.put("name", name);
+                                userInfo.put("phone", phone);
                                 userInfo.put("gender", radioButton.getText().toString());
                                 userInfo.put("profilePictureUrl", "default");
                                 currentUserDb.setValue(userInfo);

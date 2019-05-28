@@ -8,22 +8,24 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:onClick="LogOut"
         android:text="@string/log_out"
+        style="@style/button_standard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frame" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="goToMatches"
         android:text="@string/matches"
+        style="@style/button_standard"
         app:layout_constraintBottom_toBottomOf="@+id/frame"
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.54"
@@ -33,12 +35,13 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="goToSettings"
         android:text="@string/user_settings"
+        style="@style/button_standard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
